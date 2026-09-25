@@ -1,12 +1,204 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <p>Здесь мог бы быть твой сайт!</p>
-</body>
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>WebSoft HCM AI Assistant</title>
+    <meta name="description" content="AI-ассистент для разработчиков и администраторов Websoft HCM. Скоро." />
+    <meta name="theme-color" content="#13131C" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cdefs%3E%3ClinearGradient id='t' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2329B6F6'/%3E%3Cstop offset='1' stop-color='%237E57C2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='256' height='256' rx='56' fill='url(%23t)'/%3E%3Cg stroke='%23fff' stroke-width='26' stroke-linecap='round' stroke-linejoin='round' fill='none'%3E%3Cpath d='M88 64 L36 128 L88 192'/%3E%3Cpath d='M168 64 L220 128 L168 192'/%3E%3C/g%3E%3Cpath fill='%23fff' d='M128 84 C132 112 142 122 170 128 C142 134 132 144 128 172 C124 144 114 134 86 128 C114 122 124 112 128 84 Z'/%3E%3C/svg%3E"
+    />
+    <style>
+      :root {
+        --bg: #13131c;
+        --text: #e6eaf0;
+        --muted: #a9b4c2;
+        --edge: #4a6fd0;
+        --size: clamp(140px, 28vmin, 220px);
+        --depth: 12px;
+        --turn: 4s; /* один оборот */
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        height: 100%;
+      }
+
+      body {
+        /* dvh — высота видимой области с учётом мобильной адресной строки; vh — запасной вариант. */
+        min-height: 100vh;
+        min-height: 100dvh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        background: var(--bg);
+        background-image: radial-gradient(
+          circle at 50% 42%,
+          rgba(41, 182, 246, 0.16),
+          rgba(126, 87, 194, 0.08) 38%,
+          transparent 62%
+        );
+        color: var(--text);
+        font-family:
+          'Segoe UI',
+          Inter,
+          Roboto,
+          Helvetica,
+          Arial,
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+        text-align: center;
+        /* Не меньше 24px и не меньше безопасной зоны телефона с вырезом. */
+        padding: max(24px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right))
+          max(24px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
+      }
+
+      main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: clamp(28px, 6vmin, 48px);
+      }
+
+      /* Сцена с перспективой: без неё поворот вокруг Y выглядит плоским сжатием. */
+      .scene {
+        width: var(--size);
+        height: var(--size);
+        perspective: calc(var(--size) * 4);
+      }
+
+      .coin {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        animation: spin var(--turn) linear infinite;
+      }
+
+      .face,
+      .edge {
+        position: absolute;
+        inset: 0;
+        border-radius: 22%;
+        backface-visibility: hidden;
+      }
+
+      .face {
+        display: block;
+        width: 100%;
+        height: 100%;
+        filter: drop-shadow(0 18px 40px rgba(41, 182, 246, 0.28));
+      }
+
+      .face.front {
+        transform: translateZ(calc(var(--depth) / 2));
+      }
+
+      .face.back {
+        transform: rotateY(180deg) translateZ(calc(var(--depth) / 2));
+      }
+
+      /* Ребро «монетки»: стопка слоёв между лицевыми сторонами. */
+      .edge {
+        background: var(--edge);
+        backface-visibility: visible;
+        transform: translateZ(calc(var(--depth) / 2 - var(--i) * 1px));
+      }
+
+      @keyframes spin {
+        from {
+          transform: rotateY(0deg);
+        }
+        to {
+          transform: rotateY(360deg);
+        }
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(20px, 3.4vmin, 30px);
+        font-weight: 500;
+        line-height: 1.35;
+        color: var(--text);
+        letter-spacing: 0.01em;
+        max-width: 22em;
+        text-wrap: balance;
+      }
+
+      /* «что-то» не рвётся по дефису на узком экране. */
+      .nowrap {
+        white-space: nowrap;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .coin {
+          animation: none;
+          transform: rotateY(-18deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="scene" aria-hidden="true">
+        <div class="coin">
+          <svg class="face front" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="tile-front" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#29B6F6" />
+                <stop offset="1" stop-color="#7E57C2" />
+              </linearGradient>
+            </defs>
+            <rect width="256" height="256" rx="56" fill="url(#tile-front)" />
+            <g stroke="#fff" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <path d="M92 74 L46 128 L92 182" />
+              <path d="M164 74 L210 128 L164 182" />
+            </g>
+            <path
+              fill="#fff"
+              d="M128 92 C131.5 116 140 124.5 164 128 C140 131.5 131.5 140 128 164 C124.5 140 116 131.5 92 128 C116 124.5 124.5 116 128 92 Z"
+            />
+          </svg>
+
+          <div class="edge" style="--i: 1"></div>
+          <div class="edge" style="--i: 2"></div>
+          <div class="edge" style="--i: 3"></div>
+          <div class="edge" style="--i: 4"></div>
+          <div class="edge" style="--i: 5"></div>
+          <div class="edge" style="--i: 6"></div>
+          <div class="edge" style="--i: 7"></div>
+          <div class="edge" style="--i: 8"></div>
+          <div class="edge" style="--i: 9"></div>
+          <div class="edge" style="--i: 10"></div>
+          <div class="edge" style="--i: 11"></div>
+
+          <svg class="face back" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="tile-back" x1="1" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#29B6F6" />
+                <stop offset="1" stop-color="#7E57C2" />
+              </linearGradient>
+            </defs>
+            <rect width="256" height="256" rx="56" fill="url(#tile-back)" />
+            <g stroke="#fff" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <path d="M92 74 L46 128 L92 182" />
+              <path d="M164 74 L210 128 L164 182" />
+            </g>
+            <path
+              fill="#fff"
+              d="M128 92 C131.5 116 140 124.5 164 128 C140 131.5 131.5 140 128 164 C124.5 140 116 131.5 92 128 C116 124.5 124.5 116 128 92 Z"
+            />
+          </svg>
+        </div>
+      </div>
+
+      <h1>Скоро здесь будет <span class="nowrap">что-то</span> интересненькое)))</h1>
+    </main>
+  </body>
 </html>
